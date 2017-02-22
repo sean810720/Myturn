@@ -1,3 +1,17 @@
+'''
+|--------------------------------------------------------------------------
+| 抓開眼電影網 - 本週首輪
+|--------------------------------------------------------------------------
+| 開發者: Sean@2017/02/22
+|
+| Mac OSx 環境:
+| 0. 安裝 Homebrew
+| 1. brew install python3
+| 2. pip install requests
+| 3. pip install bs4
+| 4. 執行: python3 crawler_movie.py
+|
+'''
 import requests
 from bs4 import BeautifulSoup
 
