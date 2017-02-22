@@ -4,17 +4,17 @@
 |--------------------------------------------------------------------------
 | 開發者: Sean@2017/02/22
 |
-| - Mac OSX 環境安裝/執行
+| [ Mac OSX 環境安裝/執行 ]
 |
 | 1. 安裝 Homebrew:
 | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-| 
+|
 | 2. 安裝Python3 & 必備套件:
 | brew install python3
 | pip3 install requests
 | pip3 install bs4
-| 
-| 3. 執行: 
+|
+| 3. 執行:
 | python3 /本程式所在路徑/crawler_movie.py
 |
 '''
