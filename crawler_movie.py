@@ -12,7 +12,7 @@
 | 2. 安裝Python3 & 必備套件:
 | brew install python3
 | pip3 install requests
-| pip3 install bs4
+| pip3 install BeautifulSoup4
 |
 | 3. 執行:
 | python3 /本程式所在路徑/crawler_movie.py
