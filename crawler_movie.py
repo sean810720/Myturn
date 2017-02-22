@@ -4,12 +4,15 @@
 |--------------------------------------------------------------------------
 | 開發者: Sean@2017/02/22
 |
-| Mac OSx 環境:
+| - Mac OSX 環境:
+|
 | 0. 安裝 Homebrew
+| /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+| 
 | 1. brew install python3
-| 2. pip install requests
-| 3. pip install bs4
-| 4. 執行: python3 crawler_movie.py
+| 2. pip3 install requests
+| 3. pip3 install bs4
+| 4. 執行: python3 /本程式所在路徑/crawler_movie.py
 |
 '''
 import requests
