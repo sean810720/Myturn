@@ -26,7 +26,7 @@ res = requests.get("http://www.atmovies.com.tw/movie/now/")
 res.encoding = 'utf8'
 soup = BeautifulSoup(res.text, "html.parser")
 
-print ('*** 開眼電影網 - 本週首輪 ***\n\n')
+print ('\n*** 開眼電影網 - 本週首輪 ***\n')
 
 count = 1
 
