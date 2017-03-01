@@ -33,8 +33,8 @@ def GetImg(keyword='', page=1):
         soup = BeautifulSoup(res.text, "html.parser")
 
         for item in soup.select('img'):
-            car_img_link = item.get('src')
-            print("[ "+str(img_num+1)+" ] "+car_img_link)
+            img_link = item.get('src')
+            print("[ "+str(img_num+1)+" ] "+img_link)
             img_num += 1
 
         sleep(1)
