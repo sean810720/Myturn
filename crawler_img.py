@@ -49,7 +49,7 @@ def getImg(keyword='', dirpath='', page=1):
 
     for i in range(page):
 
-        url = "http://www.google.com.sg/search?tbm=isch&source=hp&q="+keyword+"&btnG=Search+Images&biw=1920&bih=1075&start="+str(i-1)+"&ndsp=21"
+        url = "http://www.google.com.tw/search?tbm=isch&source=hp&q="+keyword+"&btnG=Search+Images&biw=1920&bih=1075&start="+str(i-1)
         headers = {'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36'}
         req = urllib.request.Request(url, headers=headers)
         html = urllib.request.urlopen(req).read()
@@ -81,7 +81,7 @@ def main():
     print("請輸入搜尋關鍵字:")
     keyword = input()
 
-    print("要抓幾頁 (每頁20張) ?")
+    print("要抓幾頁 (每頁100張) ?")
     page = int(input())
 
     dirpath = createDir(keyword)
