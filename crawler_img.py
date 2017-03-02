@@ -38,10 +38,6 @@ def createDir(name):
     return dir_name
 
 
-def saveFile(file):
-    pass
-
-
 def getImg(keyword='', dirpath='', page=1):
     print("\n搜尋結果:\n")
     img_num = 0
