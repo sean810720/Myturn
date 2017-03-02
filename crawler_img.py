@@ -63,7 +63,7 @@ def getImg(keyword='', dirpath=''):
 
         except:
             img_num -= 1
-            print("----- 圖片存取失敗 -----")
+            print("\n----- 圖片存取失敗 -----\n")
 
     print("\n----- 抓圖完成 -----\n")
     print("抓到圖片張數: "+str(img_num)+"\n")
