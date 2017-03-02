@@ -81,7 +81,7 @@ def main():
     print("請輸入搜尋關鍵字:")
     keyword = input()
 
-    print("要抓幾頁?")
+    print("要抓幾頁 (每頁20張) ?")
     page = int(input())
 
     dirpath = createDir(keyword)
