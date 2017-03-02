@@ -66,7 +66,7 @@ def getImg(keyword='', dirpath=''):
             print("----- 圖片存取失敗 -----")
 
     print("\n----- 抓圖完成 -----\n")
-    print("\n抓到圖片張數: "+str(img_num))
+    print("抓到圖片張數: "+str(img_num)+"\n")
 
 
 def main():
