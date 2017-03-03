@@ -28,14 +28,11 @@ from urllib.parse import urlparse
 import random
 import json
 
-
 def createDir(name):
     dir_name = name + "_" +time.strftime("%Y%m%d%H%M%S")
-
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
     return dir_name
-
 
 def getImg(keyword='', dirpath=''):
     keyword = urllib.parse.quote(keyword)
@@ -68,16 +65,11 @@ def getImg(keyword='', dirpath=''):
     print("\n----- 抓圖完成 -----\n")
     print("抓到圖片張數: "+str(img_num)+"\n")
 
-
 def main():
     print("\n*** Google 圖片搜尋 ***\n")
-
-    print("請輸入搜尋關鍵字:")
-    keyword = input()
-
+    keyword = input("請輸入搜尋關鍵字:\n")
     dirpath = createDir('Google 圖片搜尋 - '+keyword)
     getImg(keyword, dirpath)
-
 
 if __name__ == '__main__':
 	main()
