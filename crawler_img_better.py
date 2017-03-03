@@ -17,7 +17,6 @@
 | python3 /本程式所在路徑/crawler_img_better.py
 |
 '''
-import requests
 import os
 import random
 import time
