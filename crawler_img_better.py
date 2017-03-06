@@ -57,11 +57,18 @@ def getImg(keywords='', dirpath='', amount=0, source=4):
 
 def main():
     print("\n*** 圖片爬蟲 ***\n")
-    keywords = input("輸入要搜尋的關鍵字:\n")
-    amount   = int(input("想抓幾張:\n"))
-    source   = int(input("選擇抓圖來源 (輸入數字): (1) Google 圖片 (2) Microsoft Bing (3) 百度 (4) 我全都要\n"))
-    dirpath  = createDir('圖片搜尋(來源_'+str(source)+') - '+keywords)
-    getImg(keywords, dirpath, amount, source)
+
+    try:
+        keywords = input("輸入要搜尋的關鍵字:\n")
+        amount   = int(input("想抓幾張:\n"))
+        source   = int(input("選擇抓圖來源 (輸入數字): (1) Google 圖片 (2) Microsoft Bing (3) 百度 (4) 我全都要\n"))
+        dirpath  = createDir('圖片搜尋(來源_'+str(source)+') - '+keywords)
+        getImg(keywords, dirpath, amount, source)
+
+    except:
+        print('\n--- 輸入錯誤 ---\n')
+        main()
 
 if __name__ == '__main__':
 	main()
+
