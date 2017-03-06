@@ -66,7 +66,7 @@ def main():
         getImg(keywords, dirpath, amount, source)
 
     except:
-        print('\n--- 輸入錯誤 ---\n')
+        print('\n--- 輸入錯誤, 請重新輸入 ---\n')
         main()
 
 if __name__ == '__main__':
