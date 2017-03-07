@@ -54,6 +54,7 @@ def getGoHappy(keyword=''):
 
 # 取得 Yahoo 購物中心商品列表
 def getYahoo(keyword=''):
+    result0 = []
     result  = []
     domain  = 'https://tw.search.buy.yahoo.com/search/shopping/product'
 
@@ -66,16 +67,21 @@ def getYahoo(keyword=''):
 
         # 商品基本資料
         for item in soup.select('.srp-pdimage a'):
-            result.append({'url': str(item['href']),
+            result0.append({'url': str(item['href']),
                            'title': str(item['title']),
-                           'img': str(item.find('img')['src']),
+                           'img': str(item.find('img')['src'])
             })
 
         # 商品價格
         count = 0
         for item2 in soup.select('.srp-listprice'):
-            result[count]['price'] = item2.text.replace('網路價 $','').replace(',','')
+            result0[count]['price'] = item2.text.replace('網路價 $','').replace(',','')
             count += 1
+        
+        # 過濾沒價格的商品資料
+        for check_item in result0:
+            if 'price' in check_item:
+                result.append(check_item)
 
     except Exception as e:
         pass
@@ -85,7 +91,7 @@ def getYahoo(keyword=''):
 def main():
     try:
         keyword = input('請輸入搜尋關鍵字:\n')
-        print('\n'+str(getGoHappy(keyword))+'\n')
+        #print('\n'+str(getGoHappy(keyword))+'\n')
         print('\n'+str(getYahoo(keyword))+'\n')
 
     except:
@@ -93,5 +99,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
