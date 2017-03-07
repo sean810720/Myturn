@@ -1,3 +1,22 @@
+'''
+|--------------------------------------------------------------------------
+| 價格爬蟲
+|--------------------------------------------------------------------------
+| 開發者: Sean@2017/03/07
+|
+| [ Mac OSX 環境安裝/執行 ]
+|
+| 1. 安裝 Homebrew:
+| /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+|
+| 2. 安裝Python3 & 必備套件:
+| brew install python3
+| pip3 install BeautifulSoup4
+|
+| 3. 執行:
+| python3 /本程式所在路徑/crawler_product.py
+|
+'''
 from bs4 import BeautifulSoup
 import urllib
 from urllib.request import urlopen
@@ -35,8 +54,8 @@ def getGoHappy(keyword=''):
 
 # 取得 Yahoo 購物中心商品列表
 def getYahoo(keyword=''):
-    result = []
-    domain = 'https://tw.search.buy.yahoo.com/search/shopping/product'
+    result  = []
+    domain  = 'https://tw.search.buy.yahoo.com/search/shopping/product'
 
     try:
         url     = domain+'?p='+urllib.parse.quote(keyword)
@@ -44,7 +63,7 @@ def getYahoo(keyword=''):
         req     = urllib.request.Request(url, headers=headers)
         html    = urllib.request.urlopen(req).read()
         soup    = BeautifulSoup(html, 'html.parser')
-        
+
         # 商品基本資料
         for item in soup.select('.srp-pdimage a'):
             result.append({'url': str(item['href']),
@@ -55,7 +74,7 @@ def getYahoo(keyword=''):
         # 商品價格
         count = 0
         for item2 in soup.select('.srp-listprice'):
-            result[count]['price'] = item2.text
+            result[count]['price'] = item2.text.replace('網路價 $','').replace(',','')
             count += 1
 
     except Exception as e:
@@ -74,4 +93,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
