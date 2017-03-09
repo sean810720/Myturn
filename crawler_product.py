@@ -25,7 +25,7 @@ from bs4 import BeautifulSoup
 import urllib
 from urllib.request import urlopen
 from urllib.parse import urlparse
-from selenium import webdriver 
+from selenium import webdriver
 import time
 
 # 取得 GoHappy 商品列表
@@ -129,17 +129,17 @@ def getYahooMarket(keyword=''):
         pass
 
     return result
-    
+
 # 取得 Momo 商品列表
 def getMomo(keyword=''):
     result  = []
     domain  = 'https://www.momoshop.com.tw'
-    driver = webdriver.PhantomJS(executable_path=r'/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs') 
-    driver.get(domain+"/search/searchShop.jsp?keyword="+urllib.parse.quote(keyword)) 
+    driver = webdriver.PhantomJS(executable_path=r'/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs')
+    driver.get(domain+"/search/searchShop.jsp?keyword="+urllib.parse.quote(keyword))
     time.sleep(3)
     listArea = driver.find_element_by_class_name("listArea")
     ul = listArea.find_element_by_tag_name("ul")
-    
+
     for li in ul.find_elements_by_tag_name("li"):
         goodsUrl = li.find_element_by_class_name("goodsUrl")
         result.append({'url': str(goodsUrl.get_attribute("href")),
@@ -147,22 +147,25 @@ def getMomo(keyword=''):
                        'img': str(goodsUrl.find_element_by_class_name("prdImg").get_attribute("src")),
                        'price': int(goodsUrl.find_element_by_class_name("money").text.replace('$','').replace(',','').replace('(售價已折)',''))
         })
-        
+
     driver.close()
     return result
 
 def main():
     try:
         keyword = input('請輸入搜尋關鍵字:\n')
+        print('\n--- 開始抓 GO Happy ---\n')
         print('\n'+str(getGoHappy(keyword))+'\n')
+        print('\n--- 開始抓 Yahoo 購物中心 ---\n')
         print('\n'+str(getYahooShopping(keyword))+'\n')
+        print('\n--- 開始抓 Yahoo 超級商城 ---\n')
         print('\n'+str(getYahooMarket(keyword))+'\n')
+        print('\n--- 開始抓 Momo (會比較久) ---\n')
         print('\n'+str(getMomo(keyword))+'\n')
+        print('\n--- 執行結束 ---\n')
 
     except:
         print('\n--- input/output error ---\n')
 
 if __name__ == '__main__':
     main()
-
-
