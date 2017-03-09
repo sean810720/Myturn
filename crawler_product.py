@@ -27,6 +27,7 @@ from urllib.request import urlopen
 from urllib.parse import urlparse
 from selenium import webdriver
 import time
+import re
 
 # 取得 GoHappy 商品列表
 def getGoHappy(keyword=''):
@@ -136,7 +137,7 @@ def getMomo(keyword=''):
     domain  = 'https://www.momoshop.com.tw'
     driver  = webdriver.PhantomJS(executable_path=r'/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs')
     driver.get(domain+"/search/searchShop.jsp?keyword="+urllib.parse.quote(keyword))
-    time.sleep(3)
+    time.sleep(1)
     listArea = driver.find_element_by_class_name("listArea")
     ul       = listArea.find_element_by_tag_name("ul")
 
@@ -157,7 +158,7 @@ def getPchome(keyword=''):
     domain  = 'http://ecshweb.pchome.com.tw'
     driver  = webdriver.PhantomJS(executable_path=r'/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs')
     driver.get(domain+"/search/v3.3/?q="+urllib.parse.quote(keyword))
-    time.sleep(3)
+    time.sleep(1)
     ItemContainer = driver.find_element_by_id("ItemContainer")
     for dl in ItemContainer.find_elements_by_tag_name("dl"):
         dd = dl.find_elements_by_tag_name("dd")
@@ -165,7 +166,29 @@ def getPchome(keyword=''):
         result.append({'url': str(prod_img.get_attribute("href")),
                        'title': str(prod_img.find_element_by_tag_name("img").get_attribute("title")),
                        'img': str(prod_img.find_element_by_tag_name("img").get_attribute("src")),
-                       'price': dd[2].find_element_by_class_name("price_box").text.replace('$','').replace('網路價','')
+                       'price': int(dd[2].find_element_by_class_name("price_box").text.replace('$','').replace('網路價',''))
+        })
+
+    driver.close()
+    return result
+
+# 取得博客來商品列表
+def getBooks(keyword=''):
+    result  = []
+    domain  = 'http://search.books.com.tw'
+    driver  = webdriver.PhantomJS(executable_path=r'/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs')
+    driver.get(domain+"/search/query?key="+urllib.parse.quote(keyword))
+    time.sleep(1)
+    searchbook = driver.find_element_by_class_name("searchbook")
+
+    for item in searchbook.find_elements_by_class_name("item"):
+        a      = item.find_element_by_tag_name("a")
+        price0 = re.match(r'(.*)元',item.find_element_by_class_name("price").text,re.M|re.I)
+        price  = re.sub(r'^.*折，',"",price0.group(1))
+        result.append({'url': str(a.get_attribute("href")),
+                       'title': str(a.get_attribute("title")),
+                       'img': str(a.find_element_by_tag_name("img").get_attribute("src")),
+                       'price': int(price.replace('優惠價：','').replace(',',''))
         })
 
     driver.close()
@@ -183,9 +206,11 @@ def main():
         print('\n'+str(getYahooMarket(keyword))+'\n')
         print('\n--- 開始抓 Momo (會比較久) ---\n')
         print('\n'+str(getMomo(keyword))+'\n')
-        '''
         print('\n--- 開始抓 Pchome 線上購物 (會比較久) ---\n')
         print('\n'+str(getPchome(keyword))+'\n')
+        '''
+        print('\n--- 開始抓博客來 (會比較久) ---\n')
+        print('\n'+str(getBooks(keyword))+'\n')
         print('\n--- 執行結束 ---\n')
 
     except:
@@ -193,4 +218,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
