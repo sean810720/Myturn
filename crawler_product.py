@@ -9,11 +9,15 @@
 | 1. 安裝 Homebrew:
 | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 |
-| 2. 安裝Python3 & 必備套件:
+| 2. 安裝 Python3 & 必備套件:
 | brew install python3
 | pip3 install BeautifulSoup4
+| pip3 install selenium
 |
-| 3. 執行:
+| 3. 安裝 phantomjs
+| brew install phantomjs
+|
+| 4. 執行:
 | python3 /本程式所在路徑/crawler_product.py
 |
 '''
@@ -21,6 +25,8 @@ from bs4 import BeautifulSoup
 import urllib
 from urllib.request import urlopen
 from urllib.parse import urlparse
+from selenium import webdriver 
+import time
 
 # 取得 GoHappy 商品列表
 def getGoHappy(keyword=''):
@@ -123,6 +129,27 @@ def getYahooMarket(keyword=''):
         pass
 
     return result
+    
+# 取得 Momo 商品列表
+def getMomo(keyword=''):
+    result  = []
+    domain  = 'https://www.momoshop.com.tw'
+    driver = webdriver.PhantomJS(executable_path=r'/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs') 
+    driver.get(domain+"/search/searchShop.jsp?keyword="+urllib.parse.quote(keyword)) 
+    time.sleep(3)
+    listArea = driver.find_element_by_class_name("listArea")
+    ul = listArea.find_element_by_tag_name("ul")
+    
+    for li in ul.find_elements_by_tag_name("li"):
+        goodsUrl = li.find_element_by_class_name("goodsUrl")
+        result.append({'url': str(goodsUrl.get_attribute("href")),
+                       'title': str(goodsUrl.find_element_by_class_name("prdName").text),
+                       'img': str(goodsUrl.find_element_by_class_name("prdImg").get_attribute("src")),
+                       'price': int(goodsUrl.find_element_by_class_name("money").text.replace('$','').replace(',','').replace('(售價已折)',''))
+        })
+        
+    driver.close()
+    return result
 
 def main():
     try:
@@ -130,10 +157,12 @@ def main():
         print('\n'+str(getGoHappy(keyword))+'\n')
         print('\n'+str(getYahooShopping(keyword))+'\n')
         print('\n'+str(getYahooMarket(keyword))+'\n')
+        print('\n'+str(getMomo(keyword))+'\n')
 
     except:
         print('\n--- input/output error ---\n')
 
 if __name__ == '__main__':
     main()
+
 
