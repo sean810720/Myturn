@@ -134,11 +134,11 @@ def getYahooMarket(keyword=''):
 def getMomo(keyword=''):
     result  = []
     domain  = 'https://www.momoshop.com.tw'
-    driver = webdriver.PhantomJS(executable_path=r'/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs')
+    driver  = webdriver.PhantomJS(executable_path=r'/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs')
     driver.get(domain+"/search/searchShop.jsp?keyword="+urllib.parse.quote(keyword))
     time.sleep(3)
     listArea = driver.find_element_by_class_name("listArea")
-    ul = listArea.find_element_by_tag_name("ul")
+    ul       = listArea.find_element_by_tag_name("ul")
 
     for li in ul.find_elements_by_tag_name("li"):
         goodsUrl = li.find_element_by_class_name("goodsUrl")
@@ -151,9 +151,30 @@ def getMomo(keyword=''):
     driver.close()
     return result
 
+# 取得 Pchome 線上購物商品列表
+def getPchome(keyword=''):
+    result  = []
+    domain  = 'http://ecshweb.pchome.com.tw'
+    driver  = webdriver.PhantomJS(executable_path=r'/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs')
+    driver.get(domain+"/search/v3.3/?q="+urllib.parse.quote(keyword))
+    time.sleep(3)
+    ItemContainer = driver.find_element_by_id("ItemContainer")
+    for dl in ItemContainer.find_elements_by_tag_name("dl"):
+        dd = dl.find_elements_by_tag_name("dd")
+        prod_img = dd[0].find_element_by_class_name("prod_img")
+        result.append({'url': str(prod_img.get_attribute("href")),
+                       'title': str(prod_img.find_element_by_tag_name("img").get_attribute("title")),
+                       'img': str(prod_img.find_element_by_tag_name("img").get_attribute("src")),
+                       'price': dd[2].find_element_by_class_name("price_box").text.replace('$','').replace('網路價','')
+        })
+
+    driver.close()
+    return result
+
 def main():
     try:
         keyword = input('請輸入搜尋關鍵字:\n')
+        '''
         print('\n--- 開始抓 GO Happy ---\n')
         print('\n'+str(getGoHappy(keyword))+'\n')
         print('\n--- 開始抓 Yahoo 購物中心 ---\n')
@@ -162,6 +183,9 @@ def main():
         print('\n'+str(getYahooMarket(keyword))+'\n')
         print('\n--- 開始抓 Momo (會比較久) ---\n')
         print('\n'+str(getMomo(keyword))+'\n')
+        '''
+        print('\n--- 開始抓 Pchome 線上購物 (會比較久) ---\n')
+        print('\n'+str(getPchome(keyword))+'\n')
         print('\n--- 執行結束 ---\n')
 
     except:
@@ -169,3 +193,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
