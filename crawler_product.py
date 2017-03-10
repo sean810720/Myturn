@@ -248,9 +248,7 @@ try:
 
     # 請更換成目前環境的 phantomjs 執行檔路徑
     phantomjs_path  = '/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs'
-
     crawler_product = CrawlerProduct(keyword, phantomjs_path).exec()
-
     print(str(crawler_product)+"\n")
 
 except Exception as e:
