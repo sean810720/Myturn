@@ -68,6 +68,7 @@ class CrawlerProduct:
                 self.result.append({'url': domain+str(item['href']),
                                     'title': str(item['title']),
                                     'img': str(item.find('img')['src']),
+                                    'source': 'GO Happy'
                 })
 
             # 商品價格
@@ -100,7 +101,8 @@ class CrawlerProduct:
             for item in soup.select('.srp-pdimage a'):
                 result0.append({'url': str(item['href']),
                                'title': str(item['title']),
-                               'img': str(item.find('img')['src'])
+                               'img': str(item.find('img')['src']),
+                               'source': 'Yahoo 購物中心'
                 })
 
             # 商品價格
@@ -137,8 +139,9 @@ class CrawlerProduct:
             # 商品基本資料
             for item in soup.select('.srp-pdimage a'):
                 result0.append({'url': str(item['href']),
-                               'title': str(item['title']),
-                               'img': str(item.find('img')['src'])
+                                'title': str(item['title']),
+                                'img': str(item.find('img')['src']),
+                                'source': 'Yahoo 超級商城'
                 })
 
             # 商品價格
@@ -175,7 +178,8 @@ class CrawlerProduct:
             self.result.append({'url': str(goodsUrl.get_attribute("href")),
                                 'title': str(goodsUrl.find_element_by_class_name("prdName").text),
                                 'img': str(goodsUrl.find_element_by_class_name("prdImg").get_attribute("src")),
-                                'price': int(goodsUrl.find_element_by_class_name("money").text.replace('$','').replace(',','').replace('(售價已折)',''))
+                                'price': int(goodsUrl.find_element_by_class_name("money").text.replace('$','').replace(',','').replace('(售價已折)','')),
+                                'source': 'Momo 購物'
             })
 
         driver.close()
@@ -205,6 +209,7 @@ class CrawlerProduct:
             self.result.append({'url': str(dd[1].find_element_by_class_name("prod_name").find_element_by_tag_name("a").get_attribute("href")),
                                 'title': str(dd[1].find_element_by_class_name("prod_name").text),
                                 'img': str(img),
+                                'source': 'PChome 線上購物',
                                 'price': int(dd[2].find_element_by_class_name("price_box").text.replace('$','').replace('網路價',''))
             })
 
@@ -228,6 +233,7 @@ class CrawlerProduct:
             self.result.append({'url': str(a.get_attribute("href")),
                                 'title': str(a.get_attribute("title")),
                                 'img': str(a.find_element_by_tag_name("img").get_attribute("src")),
+                                'source': '博客來',
                                 'price': int(price.replace('優惠價：','').replace(',',''))
             })
 
