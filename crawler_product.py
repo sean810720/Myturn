@@ -74,7 +74,7 @@ class CrawlerProduct:
             # 商品價格
             count = 0
             for item2 in soup.select('.price-table'):
-                self.result[count]['price'] = int(item2.find('strong').text)
+                self.result[count]['price'] = int(item2.find('strong').text.replace(',',''))
                 count += 1
 
             print('Done.')
