@@ -29,7 +29,6 @@ from selenium import webdriver
 import time
 import re
 import operator
-import threading
 
 class CrawlerProduct:
 
@@ -194,10 +193,18 @@ class CrawlerProduct:
 
         for dl in ItemContainer.find_elements_by_tag_name("dl"):
             dd = dl.find_elements_by_tag_name("dd")
-            prod_img = dd[0].find_element_by_class_name("prod_img")
-            self.result.append({'url': str(prod_img.get_attribute("href")),
-                                'title': str(prod_img.find_element_by_tag_name("img").get_attribute("title")),
-                                'img': str(prod_img.find_element_by_tag_name("img").get_attribute("src")),
+
+            try:
+                prod_img = dd[0].find_element_by_class_name("prod_img")
+                img      = prod_img.find_element_by_tag_name("img").get_attribute("src")
+
+            except:
+                prod_img = dd[0].find_element_by_class_name("prod_noimg")
+                img      = 'http://a.ecimg.tw/css/2016/style/images/v201607/product/beta/ticrf.png'
+
+            self.result.append({'url': str(dd[1].find_element_by_class_name("prod_name").find_element_by_tag_name("a").get_attribute("href")),
+                                'title': str(dd[1].find_element_by_class_name("prod_name").text),
+                                'img': str(img),
                                 'price': int(dd[2].find_element_by_class_name("price_box").text.replace('$','').replace('網路價',''))
             })
 
@@ -236,5 +243,3 @@ try:
 
 except Exception as e:
     print('\n--- input/output error: '+str(e)+' ---\n')
-
-
