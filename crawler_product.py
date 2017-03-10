@@ -244,7 +244,7 @@ class CrawlerProduct:
 
 ### 執行範例code ###
 try:
-    keyword         = input('請輸入搜尋關鍵字:\n')
+    keyword = input('請輸入搜尋關鍵字:\n')
 
     # 請更換成目前環境的 phantomjs 執行檔路徑
     phantomjs_path  = '/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs'
