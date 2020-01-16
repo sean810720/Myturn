@@ -76,7 +76,6 @@ for item in soup.select(".filmListPA li"):
     # IMDB 評分
     movie_rating = "" if BeautifulSoup(res3.text, "html.parser").find("font") is None else BeautifulSoup(res3.text, "html.parser").find("font").text
 
-
     # 輸出結果
     print('======[',(count),']=========')
     print("片名: "+movie_title)
