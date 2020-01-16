@@ -36,7 +36,7 @@ firebase_admin.initialize_app(cred, {'databaseURL': 'https://movieshowapp-3def6.
 doc_ref = db.reference('MovieData')
 
 # 抓開眼電影
-movie_data =[]
+movie_data = []
 res = requests.get("http://www.atmovies.com.tw/movie/now/")
 res.encoding = 'utf8'
 soup = BeautifulSoup(res.text, "html.parser")
