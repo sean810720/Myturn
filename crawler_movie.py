@@ -67,7 +67,7 @@ for item in soup.select(".filmListPA li"):
     runtime = soup2[2].select('.runtime li')[0].text[3:].split("分")[0]
 
     # 上映日期
-    playtime = soup2[2].select('.runtime li')[1].text[5:]
+    open_date = soup2[2].select('.runtime li')[1].text[5:]
 
     # 預告片網址
     youtube_url = BeautifulSoup(res2.text, "html.parser").select(".video_view iframe")[0]["src"]
@@ -86,7 +86,7 @@ for item in soup.select(".filmListPA li"):
     print("圖片: "+movie_img)
     print("IMDB: "+movie_rating)
     print("片長: "+runtime)
-    print("上映日期: "+playtime)
+    print("上映日期: "+open_date)
     print("預告片網址: "+youtube_url)
     print("簡介: "+movie_intro)
     print("\n")
@@ -97,7 +97,7 @@ for item in soup.select(".filmListPA li"):
         "img_url":movie_img,
         "imdb_rating":movie_rating,
         "runtime":runtime,
-        "playtime":playtime,
+        "open_date":open_date,
         "youtube_url":youtube_url,
         "movie_intro":movie_intro
     })
