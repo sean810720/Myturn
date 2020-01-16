@@ -18,6 +18,9 @@
 | 3. 執行:
 | python3 /本程式所在路徑/crawler_movie.py
 |
+| 4. 儲存結果 json 連結:
+| https://movieshowapp-3def6.firebaseio.com/MovieData.json
+|
 '''
 import requests
 from bs4 import BeautifulSoup
