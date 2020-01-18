@@ -110,6 +110,6 @@ for item in soup.select(".filmListAllX li .filmtitle"):
         count += 1
 
 # 寫入 database reference.
-#doc_ref.set(movie_data)
+doc_ref.set(movie_data)
 
 print("電影資料更新完成\n\n")
