@@ -70,39 +70,41 @@ for item in soup.select(".filmListPA li"):
     open_date = soup2[2].select('.runtime li')[1].text[5:]
 
     # 預告片網址
-    youtube_url = BeautifulSoup(res2.text, "html.parser").select(".video_view iframe")[0]["src"]
+    youtube_url = "" if len(BeautifulSoup(res2.text, "html.parser").select(".video_view iframe")) == 0 else BeautifulSoup(res2.text, "html.parser").select(".video_view iframe")[0]["src"]
 
-    # 抓電影明細資料 - iFrame
-    res3 = requests.get("http://app2.atmovies.com.tw/cfrating/film_ratingdata.cfm?filmid="+movie_id)
-    res3.encoding = 'utf8'
+    if youtube_url != "":
 
-    # IMDB 評分
-    movie_rating = "" if BeautifulSoup(res3.text, "html.parser").find("font") is None else BeautifulSoup(res3.text, "html.parser").find("font").text
+        # 抓電影明細資料 - iFrame
+        res3 = requests.get("http://app2.atmovies.com.tw/cfrating/film_ratingdata.cfm?filmid="+movie_id)
+        res3.encoding = 'utf8'
 
-    # 輸出結果
-    print('======[',(count),']=========')
-    print("片名: "+movie_title)
-    print("網址: "+movie_url)
-    print("圖片: "+movie_img)
-    print("IMDB: "+movie_rating)
-    print("片長: "+runtime)
-    print("上映日期: "+open_date)
-    print("預告片網址: "+youtube_url)
-    print("簡介: "+movie_intro)
-    print("\n")
+        # IMDB 評分
+        movie_rating = "" if BeautifulSoup(res3.text, "html.parser").find("font") is None else BeautifulSoup(res3.text, "html.parser").find("font").text
 
-    movie_data.append({
-        "title":movie_title,
-        "url":movie_url,
-        "img_url":movie_img,
-        "imdb_rating":movie_rating,
-        "runtime":runtime,
-        "open_date":open_date,
-        "youtube_url":youtube_url,
-        "movie_intro":movie_intro
-    })
+        # 輸出結果
+        print('======[',(count),']=========')
+        print("片名: "+movie_title)
+        print("網址: "+movie_url)
+        print("圖片: "+movie_img)
+        print("IMDB: "+movie_rating)
+        print("片長: "+runtime)
+        print("上映日期: "+open_date)
+        print("預告片網址: "+youtube_url)
+        print("簡介: "+movie_intro)
+        print("\n")
 
-    count += 1
+        movie_data.append({
+            "title":movie_title,
+            "url":movie_url,
+            "img_url":movie_img,
+            "imdb_rating":movie_rating,
+            "runtime":runtime,
+            "open_date":open_date,
+            "youtube_url":youtube_url,
+            "movie_intro":movie_intro
+        })
+
+        count += 1
 
 # 寫入 database reference.
 doc_ref.set(movie_data)
