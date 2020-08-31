@@ -52,7 +52,7 @@ try:
     for movie in movies:
 
         # 要抓的頁數
-        page_count = 10
+        page_count = 11
 
         # Yahoo 電影 - 資料搜尋
         movie_id = ''
@@ -76,55 +76,59 @@ try:
 
             # count = 1
             for i in range(page_count):
-                res = requests.get("https://movies.yahoo.com.tw/movieinfo_review.html/id={}?sort=update_ts&order=desc&page={}".format(movie_id, i))
-                res.encoding = 'utf8'
-                soup = BeautifulSoup(res.text, "html.parser")
+                if i == 0:
+                    pass
 
-                for item in soup.select(".usercom_list li"):
+                else:
+                    res = requests.get("https://movies.yahoo.com.tw/movieinfo_review.html/id={}?sort=update_ts&order=desc&page={}".format(movie_id, i))
+                    res.encoding = 'utf8'
+                    soup = BeautifulSoup(res.text, "html.parser")
 
-                    # 發表內容
-                    review_content = ''
-                    review_content = str(item.find_all('span')[2].text)
+                    for item in soup.select(".usercom_list li"):
 
-                    # 發表者
-                    reviewer = ''
-                    reviewer = str(item.select('.user_id')[0].text).replace('發表人：','')
+                        # 發表內容
+                        review_content = ''
+                        review_content = str(item.find_all('span')[2].text)
 
-                    # 發表時間
-                    review_time = ''
-                    review_time = str(item.select('.user_time')[0].text).replace('發表時間：','')
+                        # 發表者
+                        reviewer = ''
+                        reviewer = str(item.select('.user_id')[0].text).replace('發表人：','')
 
-                    # 五星評分
-                    review_score = 0
-                    review_score = item.find_all('input')[1]['value']
+                        # 發表時間
+                        review_time = ''
+                        review_time = str(item.select('.user_time')[0].text).replace('發表時間：','')
 
-                    # 網友讚數
-                    review_good_num = 0
-                    review_good_num = item.find_all('input')[2]['value']
+                        # 五星評分
+                        review_score = 0
+                        review_score = item.find_all('input')[1]['value']
 
-                    # 網友噓數
-                    review_bad_num = 0
-                    review_bad_num = item.find_all('input')[3]['value']
+                        # 網友讚數
+                        review_good_num = 0
+                        review_good_num = item.find_all('input')[2]['value']
 
-                    # 輸出結果
-                    # print('======[',(count),']=========')
-                    # print("發表內容: "+review_content)
-                    # print("發表者: "+reviewer)
-                    # print("發表時間: "+review_time)
-                    # print("五星評分: ",review_score)
-                    # print("網友讚數: ",review_good_num)
-                    # print("網友噓數: ",review_bad_num)
-                    # print("\n")
-                    # count += 1
+                        # 網友噓數
+                        review_bad_num = 0
+                        review_bad_num = item.find_all('input')[3]['value']
 
-                    review_sub_data.append({
-                        "review_content":review_content,
-                        "reviewer":reviewer,
-                        "review_time":review_time,
-                        "review_score":review_score,
-                        "review_good_num":review_good_num,
-                        "review_bad_num":review_bad_num
-                    })
+                        # 輸出結果
+                        # print('======[',(count),']=========')
+                        # print("發表內容: "+review_content)
+                        # print("發表者: "+reviewer)
+                        # print("發表時間: "+review_time)
+                        # print("五星評分: ",review_score)
+                        # print("網友讚數: ",review_good_num)
+                        # print("網友噓數: ",review_bad_num)
+                        # print("\n")
+                        # count += 1
+
+                        review_sub_data.append({
+                            "review_content":review_content,
+                            "reviewer":reviewer,
+                            "review_time":review_time,
+                            "review_score":review_score,
+                            "review_good_num":review_good_num,
+                            "review_bad_num":review_bad_num
+                        })
 
             if len(review_sub_data) > 0 :
                 review_data.append({movie_title: review_sub_data})
