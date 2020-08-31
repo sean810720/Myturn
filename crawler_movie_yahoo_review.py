@@ -1,6 +1,6 @@
 '''
 |--------------------------------------------------------------------------
-| Yahoo電影 - 影評爬蟲
+| Yahoo電影 - 網友影評爬蟲
 |--------------------------------------------------------------------------
 | 開發者: Sean@2020/08/31
 |
@@ -12,13 +12,15 @@
 | 2. 安裝Python3 & 必備套件:
 | brew install python3
 | pip3 install requests
+| pip3 install json
+| pip3 install urllib
 | pip3 install BeautifulSoup4
 | pip3 install firebase_admin
 |
 | 3. 執行:
-| python3 /本程式所在路徑/crawler_movie.py
+| python3 /本程式所在路徑/crawler_movie_yahoo_review.py
 |
-| 4. 來源 json 連結:
+| 4. 電影基本資料來源 json:
 | https://movieshowapp-3def6.firebaseio.com/MovieData.json
 |
 '''
