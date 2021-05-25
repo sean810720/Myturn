@@ -46,78 +46,78 @@ soup = BeautifulSoup(res.text, "html.parser").select(
 
 print('\n*** 開眼電影網 - 本週首輪 ***\n')
 
-count = 1
-count0 = 0
-for item in soup[0].find_all("option"):
-    if count0 == 0:
-        pass
-    else:
+if len(soup) > 0:
 
-        # 抓電影基本資料
-        movie_title = item.text.replace("★", "")
-        movie_url = item["value"]
-        movie_id = item["value"].split(
-            "http://www.atmovies.com.tw/movie/")[1].split("/")[0]
+    count = 1
+    for item in soup[0].select("option"):
 
-        # 抓電影明細資料
-        res2 = requests.get(movie_url)
-        res2.encoding = 'utf8'
-        soup2 = BeautifulSoup(res2.text, "html.parser").select(
-            "#filmTagBlock span")
+        # 檢查首輪 option 是否有 value
+        if item.has_key("value"):
 
-        # 簡介
-        movie_intro = soup2[2].text.strip().lstrip().split()[0]
+            # 抓電影基本資料
+            movie_title = item.text.replace("★", "")
+            movie_url = item["value"]
+            movie_id = item["value"].split(
+                "http://www.atmovies.com.tw/movie/")[1].split("/")[0]
 
-        # 圖片
-        movie_img = soup2[0].find('img')['src']
+            # 抓電影明細資料
+            res2 = requests.get(movie_url)
+            res2.encoding = 'utf8'
+            soup2 = BeautifulSoup(res2.text, "html.parser").select(
+                "#filmTagBlock span")
 
-        # 片長
-        runtime = soup2[2].select('.runtime li')[0].text[3:].split("分")[0]
+            # 簡介
+            movie_intro = soup2[2].text.strip().lstrip().split()[0]
 
-        # 上映日期
-        open_date = "無資料" if len(soup2[2].select(
-            '.runtime li')) <= 1 else soup2[2].select('.runtime li')[1].text[5:]
+            # 圖片
+            movie_img = soup2[0].find('img')['src']
 
-        # 預告片網址
-        youtube_url = "" if len(BeautifulSoup(res2.text, "html.parser").select(
-            ".video_view iframe")) == 0 else BeautifulSoup(res2.text, "html.parser").select(".video_view iframe")[0]["src"]
+            # 片長
+            runtime = soup2[2].select('.runtime li')[0].text[3:].split("分")[0]
 
-        if youtube_url != "":
+            # 上映日期
+            open_date = "無資料" if len(soup2[2].select(
+                '.runtime li')) <= 1 else soup2[2].select('.runtime li')[1].text[5:]
 
-            # 抓電影明細資料 - iFrame
-            res3 = requests.get(
-                "http://app2.atmovies.com.tw/cfrating/film_ratingdata.cfm?filmid="+movie_id)
-            res3.encoding = 'utf8'
+            # 預告片網址
+            youtube_url = "" if len(BeautifulSoup(res2.text, "html.parser").select(
+                ".video_view iframe")) == 0 else BeautifulSoup(res2.text, "html.parser").select(".video_view iframe")[0]["src"]
 
-            # IMDB 評分
-            movie_rating = "" if BeautifulSoup(res3.text, "html.parser").find(
-                "font") is None else BeautifulSoup(res3.text, "html.parser").find("font").text
+            if youtube_url != "":
 
-            # 輸出結果
-            print('======[', (count), ']=========')
-            print("片名: "+movie_title)
-            print("網址: "+movie_url)
-            print("圖片: "+movie_img)
-            print("IMDB: "+movie_rating)
-            print("片長: "+runtime)
-            print("上映日期: "+open_date)
-            print("預告片網址: "+youtube_url)
-            print("簡介: "+movie_intro)
-            print("\n")
+                # 抓電影明細資料 - iFrame
+                res3 = requests.get(
+                    "http://app2.atmovies.com.tw/cfrating/film_ratingdata.cfm?filmid="+movie_id)
+                res3.encoding = 'utf8'
 
-            movie_data.append({
-                "title": movie_title,
-                "url": movie_url,
-                "img_url": movie_img,
-                "imdb_rating": movie_rating,
-                "runtime": runtime,
-                "open_date": open_date,
-                "youtube_url": youtube_url,
-                "movie_intro": movie_intro
-            })
+                # IMDB 評分
+                movie_rating = "" if BeautifulSoup(res3.text, "html.parser").find(
+                    "font") is None else BeautifulSoup(res3.text, "html.parser").find("font").text
 
-            count += 1
-    count0 += 1
+                # 輸出結果
+                print('======[', (count), ']=========')
+                print("片名: "+movie_title)
+                print("網址: "+movie_url)
+                print("圖片: "+movie_img)
+                print("IMDB: "+movie_rating)
+                print("片長: "+runtime)
+                print("上映日期: "+open_date)
+                print("預告片網址: "+youtube_url)
+                print("簡介: "+movie_intro)
+                print("\n")
+
+                movie_data.append({
+                    "title": movie_title,
+                    "url": movie_url,
+                    "img_url": movie_img,
+                    "imdb_rating": movie_rating,
+                    "runtime": runtime,
+                    "open_date": open_date,
+                    "youtube_url": youtube_url,
+                    "movie_intro": movie_intro
+                })
+
+                count += 1
 
 # 寫入 database reference.
 doc_ref.set(movie_data)
