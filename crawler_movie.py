@@ -54,7 +54,7 @@ for item in soup[0].find_all("option"):
     else:
 
         # 抓電影基本資料
-        movie_title = item.text
+        movie_title = item.text.replace("★", "")
         movie_url = item["value"]
         movie_id = item["value"].split(
             "http://www.atmovies.com.tw/movie/")[1].split("/")[0]
