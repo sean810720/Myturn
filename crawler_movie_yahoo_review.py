@@ -33,8 +33,10 @@ import json
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
-cred = credentials.Certificate("./MovieShowApp/movieshowapp-3def6-firebase-adminsdk-znxfv-9f44615ec7.json")
-firebase_admin.initialize_app(cred, {'databaseURL': 'https://movieshowapp-3def6.firebaseio.com'})
+cred = credentials.Certificate(
+    "./MovieShowApp/movieshowapp-3def6-firebase-adminsdk-znxfv-9f44615ec7.json")
+firebase_admin.initialize_app(
+    cred, {'databaseURL': 'https://movieshowapp-3def6.firebaseio.com'})
 
 # Get a database reference.
 doc_ref = db.reference('MovieReview_Yahoo')
@@ -45,7 +47,8 @@ review_data = []
 try:
 
     # 電影基本資料
-    res = requests.get('https://movieshowapp-3def6.firebaseio.com/MovieData.json')
+    res = requests.get(
+        'https://movieshowapp-3def6.firebaseio.com/MovieData.json')
     res.encoding = 'utf8'
     movies = json.loads(res.text)
 
@@ -58,12 +61,13 @@ try:
         movie_id = ''
         movie_title = ''
         movie_keyword = urllib.parse.quote(movie['title'])
-        res = requests.get("https://movies.yahoo.com.tw/moviesearch_result.html?keyword={}".format(movie_keyword))
+        res = requests.get(
+            "https://movies.yahoo.com.tw/moviesearch_result.html?keyword={}".format(movie_keyword), verify=False)
         res.encoding = 'utf8'
         soup = BeautifulSoup(res.text, "html.parser")
 
         for item in soup.select(".release_movie_name"):
-            movie_id = item.find_all('a')[0]['href'][-5:].replace('-','')
+            movie_id = item.find_all('a')[0]['href'][-5:].replace('-', '')
 
             movie_title = ''
             if len(item.select('.highlight')) > 0:
@@ -71,7 +75,8 @@ try:
 
         # Yahoo 電影 - 網友短評
         if len(movie_id) > 0 and len(movie_title) > 0:
-            print('\n*** [Yahoo電影] 網友短評 - {}({}) ***\n'.format(movie_title, movie_id))
+            print(
+                '\n*** [Yahoo電影] 網友短評 - {}({}) ***\n'.format(movie_title, movie_id))
             review_sub_data = []
 
             # count = 1
@@ -80,7 +85,8 @@ try:
                     pass
 
                 else:
-                    res = requests.get("https://movies.yahoo.com.tw/movieinfo_review.html/id={}?sort=update_ts&order=desc&page={}".format(movie_id, i))
+                    res = requests.get(
+                        "https://movies.yahoo.com.tw/movieinfo_review.html/id={}?sort=update_ts&order=desc&page={}".format(movie_id, i))
                     res.encoding = 'utf8'
                     soup = BeautifulSoup(res.text, "html.parser")
 
@@ -92,11 +98,13 @@ try:
 
                         # 發表者
                         reviewer = ''
-                        reviewer = str(item.select('.user_id')[0].text).replace('發表人：','')
+                        reviewer = str(item.select('.user_id')[
+                                       0].text).replace('發表人：', '')
 
                         # 發表時間
                         review_time = ''
-                        review_time = str(item.select('.user_time')[0].text).replace('發表時間：','')
+                        review_time = str(item.select('.user_time')[
+                                          0].text).replace('發表時間：', '')
 
                         # 五星評分
                         review_score = 0
@@ -122,15 +130,15 @@ try:
                         # count += 1
 
                         review_sub_data.append({
-                            "review_content":review_content,
-                            "reviewer":reviewer,
-                            "review_time":review_time,
-                            "review_score":review_score,
-                            "review_good_num":review_good_num,
-                            "review_bad_num":review_bad_num
+                            "review_content": review_content,
+                            "reviewer": reviewer,
+                            "review_time": review_time,
+                            "review_score": review_score,
+                            "review_good_num": review_good_num,
+                            "review_bad_num": review_bad_num
                         })
 
-            if len(review_sub_data) > 0 :
+            if len(review_sub_data) > 0:
                 review_data.append({movie_title: review_sub_data})
 
                 # 寫入 database reference.

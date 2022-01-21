@@ -39,7 +39,7 @@ doc_ref = db.reference('MovieData')
 
 # 抓開眼電影
 movie_data = []
-res = requests.get("http://www.atmovies.com.tw/movie/now/")
+res = requests.get("http://www.atmovies.com.tw/movie/now/", verify=False)
 res.encoding = 'utf8'
 soup = BeautifulSoup(res.text, "html.parser").select(
     ".showtimeQuickSelect form")
