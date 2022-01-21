@@ -62,7 +62,7 @@ try:
         movie_title = ''
         movie_keyword = urllib.parse.quote(movie['title'])
         res = requests.get(
-            "https://movies.yahoo.com.tw/moviesearch_result.html?keyword={}".format(movie_keyword), verify=False)
+            "https://movies.yahoo.com.tw/moviesearch_result.html?keyword={}".format(movie_keyword))
         res.encoding = 'utf8'
         soup = BeautifulSoup(res.text, "html.parser")
 

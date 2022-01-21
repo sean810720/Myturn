@@ -120,5 +120,6 @@ if len(soup) > 0:
                 count += 1
 
 # 寫入 database reference.
-doc_ref.set(movie_data)
+if len(movie_data) > 0:
+    doc_ref.set(movie_data)
 print("電影資料更新完成\n\n")
