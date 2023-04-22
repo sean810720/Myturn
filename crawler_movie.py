@@ -14,6 +14,7 @@
 | pip3 install requests
 | pip3 install BeautifulSoup4
 | pip3 install firebase_admin
+| pip3 install openai
 |
 | 3. 執行:
 | python3 /本程式所在路徑/crawler_movie.py
@@ -22,14 +23,25 @@
 | https://movieshowapp-3def6.firebaseio.com/MovieData.json
 |
 '''
+from firebase_admin import db
+from firebase_admin import credentials
+import firebase_admin
 import requests
 from bs4 import BeautifulSoup
 import urllib
+import configparser
+import openai
+import json
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+# openAI 設定
+openai.api_key = config.get(
+    'venusean-linebot',
+    'chatgpt_key'
+)
 
 # 初始化 Firebase 連接
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
 cred = credentials.Certificate(
     "./MovieShowApp/movieshowapp-3def6-firebase-adminsdk-znxfv-9f44615ec7.json")
 firebase_admin.initialize_app(
@@ -143,6 +155,20 @@ if len(soup) > 0:
                 movie_rating = "" if BeautifulSoup(res3.text, "html.parser").find(
                     "font") is None else BeautifulSoup(res3.text, "html.parser").find("font").text
 
+                # OpenAI Embeding 學習資料
+                movie_vector = []
+                movie_train_data = {
+                    movie_title: {
+                        "movie_type": movie_type,
+                        "movie_director": movie_director,
+                        "movie_actor": movie_actor,
+                    }
+                }
+                inputPrompt = json.dumps(movie_train_data)
+                if len(movie_train_data) > 0:
+                    movie_vector = openai.Embedding.create(
+                        input=[inputPrompt], model='text-embedding-ada-002')['data'][0]['embedding']
+
                 # 輸出結果
                 print('======[', (count), ']=========')
                 print("片名: "+movie_title)
@@ -156,6 +182,7 @@ if len(soup) > 0:
                 print("演員: "+movie_actor)
                 print("預告片網址: "+youtube_url)
                 print("簡介: "+movie_intro)
+                print("學習資料: {}".format(movie_vector))
                 print("\n")
 
                 movie_data.append({
@@ -169,7 +196,8 @@ if len(soup) > 0:
                     "movie_director": movie_director,
                     "movie_actor": movie_actor,
                     "youtube_url": youtube_url,
-                    "movie_intro": movie_intro
+                    "movie_intro": movie_intro,
+                    "movie_vector": movie_vector
                 })
 
                 count += 1
