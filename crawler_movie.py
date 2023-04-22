@@ -124,8 +124,11 @@ if len(soup) > 0:
                 # 電影類型
                 for item2 in soup4.select(".level_name"):
                     for item2_item in item2:
-                        movie_type += item2_item.text.replace(
-                            '期待度', '').replace('滿意度', '').replace('\n', '').strip()
+                        try:
+                            movie_type += item2_item.text.replace(
+                                '期待度', '').replace('滿意度', '').replace('\n', '').strip()
+                        except:
+                            continue
 
                 # 導演/演員
                 for item3 in soup4.select(".movie_intro_list"):
