@@ -92,6 +92,7 @@ if len(soup) > 0:
             movie_actor = ''
 
             # Yahoo 電影搜尋
+            movie_intro_list_tmp = []
             movie_keyword = urllib.parse.quote(movie_title)
             res3 = requests.get(
                 "https://movies.yahoo.com.tw/moviesearch_result.html?keyword={}".format(movie_keyword))
@@ -115,7 +116,6 @@ if len(soup) > 0:
                             '期待度', '').replace('滿意度', '').replace('\n', '').strip()
 
                 # 導演/演員
-                movie_intro_list_tmp = []
                 for item3 in soup4.select(".movie_intro_list"):
                     movie_intro_list_tmp.append(item3.text.replace('\n', '').replace(
                         '\r', '').strip().replace(' ', '').replace('導演：', '').replace('演員：', ''))
@@ -124,8 +124,9 @@ if len(soup) > 0:
                 for item4 in soup4.select(".movie_intro_foto img"):
                     movie_img = item4['src']
 
-            movie_director = movie_intro_list_tmp[0]
-            movie_actor = movie_intro_list_tmp[1]
+            if len(movie_intro_list_tmp) > 0:
+                movie_director = movie_intro_list_tmp[0]
+                movie_actor = movie_intro_list_tmp[1]
 
             # 預告片網址
             youtube_url = "" if len(BeautifulSoup(res2.text, "html.parser").select(
