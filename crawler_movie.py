@@ -160,7 +160,7 @@ if len(soup) > 0:
                 movie_train_data = {
                     movie_title: {
                         "movie_type": movie_type,
-                        "movie_director": movie_director,
+                        # "movie_director": movie_director,
                         "movie_actor": movie_actor,
                     }
                 }
@@ -178,7 +178,7 @@ if len(soup) > 0:
                 print("片長: "+runtime)
                 print("上映日期: "+open_date)
                 print("類別: "+movie_type)
-                print("導演: "+movie_director)
+                #print("導演: "+movie_director)
                 print("演員: "+movie_actor)
                 print("預告片網址: "+youtube_url)
                 print("簡介: "+movie_intro)
@@ -193,7 +193,7 @@ if len(soup) > 0:
                     "runtime": runtime,
                     "open_date": open_date,
                     "movie_type": movie_type,
-                    "movie_director": movie_director,
+                    # "movie_director": movie_director,
                     "movie_actor": movie_actor,
                     "youtube_url": youtube_url,
                     "movie_intro": movie_intro,
