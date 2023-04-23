@@ -184,6 +184,7 @@ if len(soup) > 0:
                 #print("導演: "+movie_director)
                 print("演員: "+movie_actor)
                 print("預告片網址: "+youtube_url)
+                print("Yahoo 介紹頁網址: "+yahoo_intro_url)
                 print("簡介: "+movie_intro)
                 print("學習資料: {}".format(movie_vector))
                 print("\n")
@@ -198,6 +199,7 @@ if len(soup) > 0:
                     "movie_type": movie_type,
                     # "movie_director": movie_director,
                     "movie_actor": movie_actor,
+                    "yahoo_intro_url": yahoo_intro_url,
                     "youtube_url": youtube_url,
                     "movie_intro": movie_intro,
                     "movie_vector": movie_vector
