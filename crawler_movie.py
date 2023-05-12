@@ -160,14 +160,12 @@ if len(soup) > 0:
 
                 # OpenAI Embeding 學習資料
                 movie_vector = []
-                movie_train_data = {
-                    movie_title: {
-                        "movie_type": movie_type,
-                        # "movie_director": movie_director,
-                        "movie_actor": movie_actor,
-                    }
-                }
-                inputPrompt = json.dumps(movie_train_data)
+                movie_train_data = "{}{}{}".format(
+                    movie_type,
+                    movie_actor,
+                    movie_director
+                )
+                inputPrompt = movie_train_data
                 if len(movie_train_data) > 0:
                     movie_vector = openai.Embedding.create(
                         input=[inputPrompt], model='text-embedding-ada-002')['data'][0]['embedding']
@@ -181,7 +179,7 @@ if len(soup) > 0:
                 print("片長: "+runtime)
                 print("上映日期: "+open_date)
                 print("類別: "+movie_type)
-                #print("導演: "+movie_director)
+                print("導演: "+movie_director)
                 print("演員: "+movie_actor)
                 print("預告片網址: "+youtube_url)
                 print("Yahoo 介紹頁網址: "+yahoo_intro_url)
@@ -197,7 +195,7 @@ if len(soup) > 0:
                     "runtime": runtime,
                     "open_date": open_date,
                     "movie_type": movie_type,
-                    # "movie_director": movie_director,
+                    "movie_director": movie_director,
                     "movie_actor": movie_actor,
                     "yahoo_intro_url": yahoo_intro_url,
                     "youtube_url": youtube_url,
